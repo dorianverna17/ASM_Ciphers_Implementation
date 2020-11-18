@@ -1,0 +1,127 @@
+Verna Dorian-Alexandru
+324CC
+Tema 2 IOCLA
+
+Durata realizarii temei:
+Task1 ~ 2 ore
+Task2 ~ 3 ore
+Task3 ~ 10-11 ore (aveam o eroare de care ma prindeam greu si
+in plus nu credeam ca avem voie sa folosim variabile in section.data,
+dar am intrebat pe forum si mi s-a spus ca e ok)
+Task4 ~ 2 ore
+Task5 ~ 3 ore
+Total: ~ 20-21 ore
+
+M-am apucat de tema inainte de a face laboratorul 5 si nu stiam in
+totalitate modul de utilizare al registrilor asa ca la task-urile
+1 si 2 nu am folosit niciun fel de variabila ajutatoare. De asemenea,
+am preferat sa folosesc instructiuni de tip jump pentru a face loop-uri
+si nu intructiunea loop, intrucat nu foloseam intotdeauna ecx pentru
+iterare. De asemenea, obisnuiam sa pornesc de la sfarsitul sirului
+catre inceput intr-o iterare deoarece nu stiam ca am voie sa folosesc
+variabile ajutatoare. De la task-ul 3 sau 4 am inceput sa folosesc
+variabile si am inceput sa fac iteratiile mai bine (pornind de la
+pozitia 0 spre sfarsit).
+
+De asemenea, task-urile sunt explicate in detaliu prin comentariile din
+cod. Am scris comentariile in engleza, deoarece am inteles ca e de preferat
+(asa ni s-a spus pe forum la prima tema).
+
+Task1:
+Task-ul 1 a fost ok, am luat cate doua caractere de pe accesi pozitie,
+din cheie, respectiv plaintext, le puneam in eax si ebx, faceam xor-ul
+si il puneam pe pozitia dorita in edx. Am luat sirurile de la final la
+inceput deoarece decrementam ecx pe masura ce faceam xor si puneam in
+edx caracterul respectiv. De asemenea, nestiind ca pot sa declar variabile
+in section .data, am preferat sa decrementez ecx, ca sa pastrez in acesta
+pozitia, fara sa o pierd.
+Am avut si o intrebare pe forum la task-ul acesta, cand copiam eax in
+[edx + ecx - 1] primeam o eroare la free dar era din cauza ca eu copiam 32
+de biti si nu 8. Am fost lamurit prin hint-ul dat pe forum. Inca nu
+discutasem la curs foarte mult de lucruri de genul si a fost putin greu
+la inceput.
+
+Task2:
+Task-ul 2 il fac in acelasi mod ca task-ul 1 (pornind de la sfarsitul
+sirului). La acest task am insa grija cu adunarea codurilor ASCII ale
+elementelor. Compar de multe ori valorile acestor coduri ASCII ca sa imi
+dau seama cand trebuie sa scad 26 de mai mule ori sau o singura data. Scad
+26 deoarece trebuie sa scad numarul de litere din alfabet ca sa il reiau
+de la capat. Prima oara verific daca caracterul la care sunt este litera,
+daca nu este, atunci il pun in edx asa cum este. Daca este litera, atunci
+o adun cu cheia si verific daca rezultatul are codul ASCII mai mic decat 0,
+adica suma reala a codurilor este mai mare de 127, in acest caz trebuind sa
+decrementez suma pana cand obtin codul unei litere. Dupa aceea mai este
+necesara o decrementare pe baza unor conditii (de exemplu daca eram la
+litera Z si am incrementat cu 1, atunci trebuie sa scad 26, deoarece nu
+intrasem in decrementare inainte). Apoi pun elementul la pozitia buna in edx
+si continui loop-ul daca mai am elemente.
+
+Task3:
+Task-ul 3 a fost cel mai greu din punctul meu de vedere. Mi-a luat
+foarte mult sa imi dau seama ca nu puteam sa extind cheia in registrul
+in care se afla ea pusa la momentul dat (poate checkerul s-a mai modificat
+de atunci - nu stiu - cred ca treceam peste memoria alocata acelui parametru
+al functiei). Ceea ce am facut a fost sa iau cheia, sa o pun in edx (daca 
+lungimea acesteia era mai mica decat lungimea sirului de criptat). Dupa ce
+copiam in edx, extindeam cheia fara sa tin cont daca intalneam spatii sau
+caractere care nu erau litere in sirul de criptat. Astfel obtineam ceva de
+genul:
+
+Donald Trump
+BIDENBIDENBI
+
+Dupa aceea luam fiecare caracter din sirul care trebuia criptat si verificam
+daca este sau nu litera. Daca nu era litera, atunci trebuia sa prelucrez
+cheia. Ceea ce fac e sa shiftez la dreapta caracterului care nu e litera
+toate caracterele din cheie incepand de la pozitia lui. Astfel, obtineam
+ceva de genul:
+
+Donald Trump
+BIDENBIIDENB
+
+Dupa aceea incepeam sa iterez pentru a aduna codurile ASCII, iar atunci cand
+intalneam un caracter care nu era litera in sirul de criptat, atunci nu
+adunam codul sau ASCII cu cel al caracterului din cheie, ci inlocuiam
+caracterul din cheie cu cel al elementului din sirul de criptat. De notat
+este faptul ca rezultatul il memoram in cheie tot timpul, adica la adresele
+care trebuiau incepand cu edx, deci nu modificam plaintext-ul.
+La acest task m-am prins totodata ca trebuie sa folosesc si variabile
+declarate in section .data, ceea ce m-a ajutat foarte mult, deoarece
+ma chinuisem destul de mult sa fac totul folosind doar registrii dati.
+
+Task4
+Task-ul 4 a fost mai usor decat 3. Foloseam doi iteratori: it1 si it2
+pentru a itera prin haystack si needle. Este o implementare asemanatoare
+cu cea pe care am mai facut-o in c pentru aceasta functie: iteram prin
+haystack, iar in momentul in care elementul curent din haystack era acelasi
+cu elementul curent din needle, atunci ma duceam la un label la care
+verificam daca in continuare in haystack se regaseau una dupa alta
+caracterele din needle. Daca nu se gaseau atunci saream inapoi in loop-ul
+initial unde iteram prin haystack (continuand de unde am ramas). Daca
+gaseam sirul in timpul loop-ului atunci saream la un label unde puneam in
+edi valoarea cautata. Daca loop-ul se termina, atunci saream la un label
+unde puneam in edi lungimea lui haystack + 1.
+
+Task5:
+Acest task a fost oarecum ca si 4, putin mai greu insa. Am stat sa ma
+gandesc de ce nu imi da bine desi reprezentarea in hexa era buna, dar mi-am
+dat seama ca se dorea un \n la sfarsitul output-ului.
+Ideea la acest task a fost sa calculez prima oara lungimea sirului rezultat.
+Astfel, luam lungimea sirului de biti, o imparteam la 4 si o salvam
+intr-o variabila. Daca aveam si rest, atunci adaugam 1 (sirul de biti nu era
+neaparat multiplu de 4). Apoi iteram prin sirul de biti. Avem un fel de
+loop mai mic intr-un loop mai mare. Intr-un loop mic luam cate 4 biti.
+Calculam valoarea secventei de 4 biti in zecimal si o transformam in hexa
+si o memoram la pozitia buna in edx (si in acest caz iteram de la sfarsit
+spre inceput, dar aici era necesar avand in vedere ca lungimea sirului de
+biti nu era multimplu de 4). Rezultatul in zecimal il salvam intr-o variabila
+sum pe care o reinitializam cu 0 tot timpul cand reiteram prin loop-ul mare.
+
+Per total a fost o tema interesanta si consider ca am invatat
+unele lucruri de baza in assembly facand-o.
+Multumesc si keep up the good work!
+
+Verna Dorian-Alexandru
+324CC
+
